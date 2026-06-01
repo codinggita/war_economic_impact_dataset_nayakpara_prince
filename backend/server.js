@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 
@@ -9,10 +10,13 @@ const searchRoutes = require("./routes/searchRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const authRoutes = require("./routes/authRoutes");
 const jwtRoutes = require("./routes/jwtRoutes");
+const protectedRoutes = require("./routes/protectedRoutes");
+const extraRoutes = require("./routes/extraRoutes");
 
 // Middleware imports
 const { globalErrorHandler, notFound } = require("./utils/errorHandler");
 const { globalLimiter } = require("./middleware/rateLimiter");
+const { logger } = require("./middleware/loggerMiddleware");
 
 dotenv.config();
 
@@ -20,6 +24,10 @@ const app = express();
 
 // Connect to MongoDB
 connectDB();
+
+// Enable CORS & Request Logging
+app.use(cors());
+app.use(logger);
 
 // Body parser
 app.use(express.json());
@@ -60,6 +68,18 @@ app.use("/search", searchRoutes);
 app.use("/admin", adminRoutes);
 app.use("/auth", authRoutes);
 app.use("/jwt", jwtRoutes);
+app.use("/protected", protectedRoutes);
+
+// Mount extra mock routes
+app.use("/regions", extraRoutes);
+app.use("/countries", extraRoutes);
+app.use("/economic-records", extraRoutes);
+app.use("/poverty-records", extraRoutes);
+app.use("/inflation-records", extraRoutes);
+app.use("/black-market-records", extraRoutes);
+app.use("/war-cost-records", extraRoutes);
+app.use("/reconstruction-records", extraRoutes);
+app.use("/unemployment-records", extraRoutes);
 
 // 404 handler
 app.use(notFound);
