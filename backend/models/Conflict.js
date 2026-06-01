@@ -133,7 +133,7 @@ const conflictSchema = new mongoose.Schema(
     },
 
     // Households
-    Households_Affected: {
+    Households_Affected:{
       type: Number,
       default: null,
     },
