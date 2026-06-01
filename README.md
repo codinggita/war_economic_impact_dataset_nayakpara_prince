@@ -1,49 +1,64 @@
-# ⚔️ War Economic Impact — Full Stack REST API
+<div align="center">
 
-> *"Wars not only destroy lives — they collapse economies, inflate currencies, push millions into poverty, and leave scars on nations for generations. This dataset tells that story with data."*
+# ⚔️ War Economic Impact — REST API
+
+### A production-ready Full Stack API documenting the economic consequences of armed conflicts worldwide
+
+[![Node.js](https://img.shields.io/badge/Node.js-v18%2B-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Express.js](https://img.shields.io/badge/Express.js-4.x-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-7.x-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://mongodb.com/)
+[![JWT](https://img.shields.io/badge/Auth-JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)](https://jwt.io/)
+[![License](https://img.shields.io/badge/License-Academic-blue?style=for-the-badge)](./LICENSE)
+[![Routes](https://img.shields.io/badge/API%20Routes-200-orange?style=for-the-badge)](./README.md)
+[![PRs](https://img.shields.io/badge/PRs-Welcome-brightgreen?style=for-the-badge)](./CONTRIBUTING.md)
+
+<br/>
+
+> *Wars not only destroy lives — they collapse economies, inflate currencies, push millions into poverty, and leave generational scars on nations. This API makes that data queryable.*
+
+[📖 Docs](#-api-reference) · [🚀 Quick Start](#-getting-started) · [📊 Dataset](#-data-model) · [🔒 Auth](#-authentication) · [🤝 Contributing](#-contributing)
+
+</div>
 
 ---
 
-## 📌 Project Overview
+## 📌 Overview
 
-This project is a production-ready **Full Stack RESTful API** built around the **War Economic Impact Dataset** — a structured collection of data capturing the economic consequences of major armed conflicts worldwide.
+The **War Economic Impact API** is a production-grade RESTful service built on **MVC architecture**, providing structured access to economic data across major historical and ongoing armed conflicts. It captures critical indicators — GDP change, inflation, poverty, black market activity, currency devaluation, unemployment, and reconstruction costs — across conflicts worldwide.
 
-The dataset covers critical economic indicators such as **GDP change, inflation rates, poverty levels, black market activity, unemployment, currency devaluation, reconstruction costs, and cost of war** across historical and ongoing global conflicts.
-
-The backend is built following strict **MVC (Model-View-Controller) Architecture** with clean folder structure, proper validation, JWT authentication, rate limiting, and pagination.
+Designed for researchers, journalists, academics, and developers, the API supports **200 endpoints** spanning filtering, pagination, sorting, search, statistics, and authenticated admin workflows.
 
 ---
 
-## 👤 Developer Info
+## 👤 Author
 
-| Field | Details |
+| | |
 |---|---|
-| **Name** | Prince Nayakpara |
-| **GitHub Username** | princenayakpara |
-| **Repository** | war_economic_impact_dataset_nayakpara_prince |
-| **Organization** | CodingGita |
+| **Developer** | Prince Nayakpara |
+| **GitHub** | [@princenayakpara](https://github.com/princenayakpara) |
+| **Organization** | [CodingGita](https://github.com/codinggita) |
+| **Repository** | [war_economic_impact_dataset_nayakpara_prince](https://github.com/codinggita/war_economic_impact_dataset_nayakpara_prince) |
 
 ---
 
 ## 🧰 Tech Stack
 
-| Layer | Technology |
-|---|---|
-| **Runtime** | Node.js v18+ |
-| **Framework** | Express.js |
-| **Database** | MongoDB |
-| **ODM** | Mongoose |
-| **Authentication** | JWT (JSON Web Tokens) |
-| **Validation** | Custom Middleware + express-validator |
-| **Rate Limiting** | express-rate-limit |
-| **Environment** | dotenv |
-| **Dev Tool** | nodemon |
-| **API Testing** | Postman |
-| **Language** | JavaScript (100%) |
+| Layer | Technology | Purpose |
+|---|---|---|
+| **Runtime** | Node.js v18+ | Server environment |
+| **Framework** | Express.js | HTTP routing & middleware |
+| **Database** | MongoDB | Document store |
+| **ODM** | Mongoose | Schema modeling & querying |
+| **Auth** | JWT (JSON Web Tokens) | Stateless authentication |
+| **Validation** | express-validator + custom middleware | Request integrity |
+| **Rate Limiting** | express-rate-limit | Abuse prevention |
+| **Config** | dotenv | Environment management |
+| **Dev** | nodemon | Hot reload in development |
+| **Testing** | Postman | API exploration & testing |
 
 ---
 
-## 📂 Folder Structure
+## 📂 Project Structure
 
 ```
 war_economic_impact_dataset/
@@ -56,7 +71,7 @@ war_economic_impact_dataset/
 │
 ├── controllers/
 │   ├── conflictController.js      # CRUD, param, query, advanced logic
-│   ├── statsController.js         # Statistics & aggregation
+│   ├── statsController.js         # Aggregation & statistics
 │   ├── searchController.js        # Keyword & field-based search
 │   └── authController.js          # Register, login, JWT logic
 │
@@ -75,372 +90,106 @@ war_economic_impact_dataset/
 │   └── rateLimiter.js             # API rate limiting
 │
 ├── utils/
-│   └── errorHandler.js            # Global error handler utility
+│   └── errorHandler.js            # Global error handler
 │
 ├── .env                           # Environment variables (git-ignored)
-├── .env.example                   # Environment variable template
-├── .gitignore                     # Git ignore rules
-├── package.json                   # Project dependencies & scripts
+├── .env.example                   # Environment template
 ├── server.js                      # Application entry point
 └── README.md                      # Project documentation
 ```
 
 ---
 
-## 🗃️ Dataset — MongoDB Schema
+## 📊 Data Model
 
-**Collection Name:** `conflicts`
+**Collection:** `conflicts`
 
-Each document represents one armed conflict and its full economic impact profile.
+Each document captures one armed conflict and its full economic impact profile.
+
+### Core Fields
 
 | Field | Type | Description |
 |---|---|---|
-| `Conflict_Name` | String | Name of the war/conflict |
-| `Conflict_Type` | String | Type: Civil War, World War, Interstate, etc. |
+| `Conflict_Name` | String | Name of the war or conflict |
+| `Conflict_Type` | String | Civil War, World War, Interstate, etc. |
 | `Country` | String | Primary country affected |
-| `Region` | String | Geographic region (Europe, Middle East, etc.) |
-| `Start_Year` | Number | Year the conflict began |
-| `End_Year` | Number / null | Year conflict ended (`null` if Ongoing) |
+| `Region` | String | Geographic region |
+| `Start_Year` | Number | Year conflict began |
+| `End_Year` | Number \| null | Year conflict ended (`null` if ongoing) |
 | `Status` | String | `Ongoing` or `Resolved` |
-| `GDP_Change_%` | Number | % change in GDP during conflict (often negative) |
-| `Inflation_Rate_%` | Number | Inflation rate during the conflict |
-| `Poverty_Rate_%` | Number | Poverty rate during the conflict |
+
+### Economic Indicators
+
+| Field | Type | Description |
+|---|---|---|
+| `GDP_Change_%` | Number | % change in GDP during conflict |
+| `Inflation_Rate_%` | Number | Inflation rate during conflict |
+| `Poverty_Rate_%` | Number | Population in poverty (%) |
 | `Extreme_Poverty_Rate_%` | Number | Extreme poverty percentage |
-| `Food_Insecurity_Rate_%` | Number | Population % facing food insecurity |
-| `Pre_War_Unemployment_%` | Number | Unemployment rate before conflict |
-| `During_War_Unemployment_%` | Number | Unemployment rate during conflict |
+| `Food_Insecurity_Rate_%` | Number | Population facing food insecurity (%) |
+| `Pre_War_Unemployment_%` | Number | Unemployment before conflict |
+| `During_War_Unemployment_%` | Number | Unemployment during conflict |
 | `Youth_Unemployment_%` | Number | Youth unemployment during conflict |
+
+### Market & Currency
+
+| Field | Type | Description |
+|---|---|---|
 | `Affected_Sector` | String | Most impacted economic sector |
-| `Black_Market_Level` | String | Black market activity: Low / Medium / High |
-| `Black_Market_Goods` | String | Common black market goods (fuel, weapons, etc.) |
-| `Profiteering` | String | Whether profiteering occurred: Yes / No |
+| `Black_Market_Level` | String | `Low` / `Medium` / `High` |
+| `Black_Market_Goods` | String | Common goods traded (fuel, weapons, etc.) |
+| `Profiteering` | String | `Yes` / `No` |
 | `Currency_Devaluation_%` | Number | Currency devaluation percentage |
-| `Currency_Black_Market_Rate_Gap_%` | Number | Gap between official and black market exchange rate |
-| `Estimated_Reconstruction_Cost_USD` | Number | Estimated post-war reconstruction cost (USD) |
-| `Cost_of_War_USD` | Number | Total estimated cost of war (USD) |
+| `Currency_Black_Market_Rate_Gap_%` | Number | Official vs. black market exchange rate gap |
+
+### Costs & Impact
+
+| Field | Type | Description |
+|---|---|---|
+| `Estimated_Reconstruction_Cost_USD` | Number | Post-war reconstruction cost (USD) |
+| `Cost_of_War_USD` | Number | Total estimated war cost (USD) |
 | `Pre_War_Informal_Economy_%` | Number | Informal economy share before conflict |
 | `During_War_Informal_Economy_%` | Number | Informal economy share during conflict |
 | `Households_Affected` | Number | Number of households affected |
 
 ---
 
-## 📊 API Routes Summary
+## 🚀 Getting Started
 
-> **Total Routes: 200** across 14 categories
+### Prerequisites
 
-### 🔹 Basic CRUD Routes (`/conflicts`)
+- Node.js v18+
+- MongoDB (local or [MongoDB Atlas](https://www.mongodb.com/atlas))
+- npm
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/conflicts` | Fetch all conflicts |
-| GET | `/conflicts/:conflictId` | Fetch conflict by ID |
-| POST | `/conflicts` | Create new conflict |
-| PUT | `/conflicts/:conflictId` | Replace full conflict document |
-| PATCH | `/conflicts/:conflictId` | Partially update conflict |
-| DELETE | `/conflicts/:conflictId` | Delete a conflict |
+### Installation
 
----
+```bash
+# 1. Clone the repository
+git clone https://github.com/princenayakpara/war_economic_impact_dataset_nayakpara_prince.git
 
-### 🔹 Route Parameter Routes (37 endpoints)
+# 2. Navigate to backend
+cd war_economic_impact_dataset_nayakpara_prince/backend
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/conflicts/name/:name` | Fetch by conflict name |
-| GET | `/conflicts/type/:type` | Fetch by conflict type |
-| GET | `/conflicts/region/:region` | Fetch by region |
-| GET | `/conflicts/status/:status` | Fetch by status |
-| GET | `/conflicts/country/:country` | Fetch by country |
-| GET | `/conflicts/start-year/:year` | Fetch by start year |
-| GET | `/conflicts/end-year/:year` | Fetch by end year |
-| GET | `/conflicts/inflation/:rate` | Fetch by inflation rate |
-| GET | `/conflicts/gdp-loss/:percentage` | Fetch by GDP loss |
-| GET | `/conflicts/poverty/:rate` | Fetch by poverty rate |
-| GET | `/conflicts/extreme-poverty/:rate` | Fetch by extreme poverty |
-| GET | `/conflicts/food-insecurity/:rate` | Fetch by food insecurity |
-| GET | `/conflicts/unemployment/:rate` | Fetch by unemployment |
-| GET | `/conflicts/youth-unemployment/:rate` | Fetch by youth unemployment |
-| GET | `/conflicts/sector/:sector` | Fetch by affected sector |
-| GET | `/conflicts/black-market/:level` | Fetch by black market level |
-| GET | `/conflicts/black-market-goods/:goods` | Fetch by black market goods |
-| GET | `/conflicts/profiteering/:status` | Fetch by profiteering status |
-| GET | `/conflicts/currency-gap/:gap` | Fetch by currency gap |
-| GET | `/conflicts/reconstruction-cost/:amount` | Fetch by reconstruction cost |
-| GET | `/conflicts/cost-of-war/:amount` | Fetch by total war cost |
-| GET | `/conflicts/informal-economy/pre/:value` | Fetch by pre-war informal economy |
-| GET | `/conflicts/informal-economy/during/:value` | Fetch by wartime informal economy |
-| GET | `/conflicts/households/:count` | Fetch by affected households |
-| GET | `/conflicts/region/:region/latest` | Latest conflict in a region |
-| GET | `/conflicts/region/:region/oldest` | Oldest conflict in a region |
-| GET | `/conflicts/country/:country/history` | Full conflict history of a country |
-| GET | `/conflicts/type/:type/count` | Count conflicts by type |
-| GET | `/conflicts/status/:status/count` | Count conflicts by status |
-| GET | `/conflicts/year/:year` | Fetch conflicts active in a year |
-| GET | `/conflicts/sector/:sector/highest-gdp-loss` | Highest GDP loss in a sector |
-| GET | `/conflicts/sector/:sector/highest-inflation` | Highest inflation in a sector |
-| GET | `/conflicts/war/:name/summary` | War summary |
-| GET | `/conflicts/war/:name/economic-impact` | Economic impact of a war |
-| GET | `/conflicts/war/:name/poverty-impact` | Poverty impact of a war |
-| GET | `/conflicts/war/:name/black-market` | Black market data of a war |
-| GET | `/conflicts/war/:name/reconstruction` | Reconstruction details |
-| GET | `/conflicts/war/:name/currency-crisis` | Currency crisis data |
-| GET | `/conflicts/war/:name/unemployment` | Unemployment impact |
+# 3. Install dependencies
+npm install
 
----
+# 4. Configure environment
+cp .env.example .env
+# Edit .env with your MongoDB URI and JWT secret
 
-### 🔹 Query Parameter Routes (29 endpoints)
+# 5. Start development server
+npm run dev
+```
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/conflicts?status=Ongoing` | Filter by status |
-| GET | `/conflicts?region=Europe` | Filter by region |
-| GET | `/conflicts?country=Japan` | Filter by country |
-| GET | `/conflicts?type=World War` | Filter by type |
-| GET | `/conflicts?inflationAbove=50` | High inflation conflicts |
-| GET | `/conflicts?inflationBelow=20` | Low inflation conflicts |
-| GET | `/conflicts?gdpLossAbove=30` | High GDP loss |
-| GET | `/conflicts?povertyAbove=25` | High poverty |
-| GET | `/conflicts?foodInsecurityAbove=20` | High food insecurity |
-| GET | `/conflicts?currencyGapAbove=100` | High currency gap |
-| GET | `/conflicts?warCostAbove=1000000000` | Expensive wars |
-| GET | `/conflicts?reconstructionAbove=5000000000` | Costly reconstruction |
-| GET | `/conflicts?sector=Agriculture` | Filter by sector |
-| GET | `/conflicts?blackMarket=High` | High black market activity |
-| GET | `/conflicts?profiteering=Yes` | Profiteering conflicts |
-| GET | `/conflicts?year=2022` | Conflicts in a specific year |
-| GET | `/conflicts?startYear=1939` | Conflicts from start year |
-| GET | `/conflicts?endYear=1945` | Conflicts ended by year |
-| GET | `/conflicts?country=Ukraine&status=Ongoing` | Ongoing Ukraine conflicts |
-| GET | `/conflicts?region=Middle East&type=Civil War` | Middle East civil wars |
-| GET | `/conflicts?minInflation=20&maxInflation=80` | Inflation range filter |
-| GET | `/conflicts?minGDP=-50&maxGDP=-20` | GDP loss range filter |
-| GET | `/conflicts?minPoverty=10&maxPoverty=40` | Poverty range filter |
-| GET | `/conflicts?minUnemployment=5&maxUnemployment=30` | Unemployment range filter |
-| GET | `/conflicts?sort=Inflation_Rate_%` | Sort by inflation |
-| GET | `/conflicts?sort=-GDP_Change_%` | Sort descending by GDP |
-| GET | `/conflicts?sort=Start_Year` | Sort by start year |
-| GET | `/conflicts?sort=-Estimated_Reconstruction_Cost_USD` | Sort by reconstruction cost |
-| GET | `/conflicts?keyword=war` | Keyword search |
+### Available Scripts
 
----
+| Command | Description |
+|---|---|
+| `npm run dev` | Start with nodemon (hot reload) |
+| `npm start` | Start in production mode |
 
-### 🔹 Pagination Routes (10 endpoints)
-
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/conflicts?page=1&limit=10` | Paginate all conflicts |
-| GET | `/conflicts?page=2&limit=20` | Fetch second page |
-| GET | `/conflicts/ongoing?page=1&limit=5` | Paginate ongoing conflicts |
-| GET | `/conflicts/resolved?page=2&limit=10` | Paginate resolved conflicts |
-| GET | `/conflicts/europe?page=1&limit=15` | Paginate Europe conflicts |
-| GET | `/conflicts/asia?page=1&limit=15` | Paginate Asia conflicts |
-| GET | `/conflicts/high-inflation?page=1&limit=10` | Paginate high inflation |
-| GET | `/conflicts/high-poverty?page=1&limit=10` | Paginate high poverty |
-| GET | `/conflicts/high-gdp-loss?page=1&limit=10` | Paginate high GDP loss |
-| GET | `/conflicts/black-market/high?page=1&limit=5` | Paginate high black market |
-
----
-
-### 🔹 Sorting Routes (15 endpoints)
-
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/conflicts?sort=Inflation_Rate_%` | Sort by inflation (asc) |
-| GET | `/conflicts?sort=-Inflation_Rate_%` | Sort by inflation (desc) |
-| GET | `/conflicts?sort=GDP_Change_%` | Sort by GDP change (asc) |
-| GET | `/conflicts?sort=-GDP_Change_%` | Sort by GDP change (desc) |
-| GET | `/conflicts?sort=Pre_War_Unemployment_%` | Sort by pre-war unemployment |
-| GET | `/conflicts?sort=-During_War_Unemployment_%` | Sort by wartime unemployment |
-| GET | `/conflicts?sort=Food_Insecurity_Rate_%` | Sort by food insecurity |
-| GET | `/conflicts?sort=-Extreme_Poverty_Rate_%` | Sort by extreme poverty |
-| GET | `/conflicts?sort=Currency_Devaluation_%` | Sort by currency devaluation |
-| GET | `/conflicts?sort=-Currency_Black_Market_Rate_Gap_%` | Sort by black market gap |
-| GET | `/conflicts?sort=Estimated_Reconstruction_Cost_USD` | Sort by reconstruction cost |
-| GET | `/conflicts?sort=-Cost_of_War_USD` | Sort by war cost (desc) |
-| GET | `/conflicts?sort=Start_Year` | Sort by start year |
-| GET | `/conflicts?sort=-End_Year` | Sort by end year (desc) |
-| GET | `/conflicts?sort=Conflict_Name` | Sort alphabetically |
-
----
-
-### 🔹 Search Routes (`/search`) — 13 endpoints
-
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/search?keyword=Japan` | Search by keyword |
-| GET | `/search?keyword=World War` | Search world wars |
-| GET | `/search/conflicts?country=Germany` | Search by country |
-| GET | `/search/conflicts?region=Africa` | Search by region |
-| GET | `/search/conflicts?type=Civil War` | Search by type |
-| GET | `/search/conflicts?status=Resolved` | Search resolved conflicts |
-| GET | `/search/economic?inflation=100` | Search by inflation level |
-| GET | `/search/economic?poverty=30` | Search by poverty impact |
-| GET | `/search/economic?gdp=-40` | Search by GDP loss |
-| GET | `/search/economic?currency=50` | Search by currency crisis |
-| GET | `/search/sector?name=Agriculture` | Search by sector |
-| GET | `/search/black-market?goods=fuel` | Search by black market goods |
-| GET | `/search/black-market?goods=weapons` | Search weapons black market |
-
----
-
-### 🔹 Statistics Routes (`/stats`) — 10 endpoints
-
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/stats/total-conflicts` | Total number of conflicts |
-| GET | `/stats/ongoing-conflicts` | Count of ongoing conflicts |
-| GET | `/stats/resolved-conflicts` | Count of resolved conflicts |
-| GET | `/stats/highest-inflation` | Conflict with highest inflation |
-| GET | `/stats/lowest-gdp` | Conflict with lowest GDP change |
-| GET | `/stats/highest-poverty` | Conflict with highest poverty |
-| GET | `/stats/highest-food-insecurity` | Conflict with highest food insecurity |
-| GET | `/stats/highest-currency-gap` | Conflict with largest currency gap |
-| GET | `/stats/highest-war-cost` | Most expensive war |
-| GET | `/stats/highest-reconstruction-cost` | Costliest reconstruction |
-
----
-
-### 🔹 POST / PUT / PATCH / DELETE Routes (30 endpoints)
-
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/conflicts` | Create conflict |
-| POST | `/regions` | Create region |
-| POST | `/countries` | Create country |
-| POST | `/economic-records` | Create economic record |
-| POST | `/poverty-records` | Create poverty record |
-| POST | `/inflation-records` | Create inflation record |
-| POST | `/black-market-records` | Create black market record |
-| POST | `/war-cost-records` | Create war cost record |
-| POST | `/reconstruction-records` | Create reconstruction record |
-| POST | `/unemployment-records` | Create unemployment record |
-| PUT | `/conflicts/:conflictId` | Replace conflict |
-| PUT | `/countries/:countryId` | Replace country |
-| PUT | `/economic-records/:recordId` | Replace economic record |
-| PUT | `/reconstruction-records/:recordId` | Replace reconstruction record |
-| PATCH | `/conflicts/:conflictId/status` | Update status only |
-| PATCH | `/conflicts/:conflictId/inflation` | Update inflation only |
-| PATCH | `/conflicts/:conflictId/gdp` | Update GDP only |
-| PATCH | `/conflicts/:conflictId/poverty` | Update poverty only |
-| PATCH | `/conflicts/:conflictId/unemployment` | Update unemployment only |
-| PATCH | `/conflicts/:conflictId/sector` | Update sector only |
-| DELETE | `/conflicts/:conflictId` | Delete conflict |
-| DELETE | `/countries/:countryId` | Delete country |
-| DELETE | `/regions/:regionId` | Delete region |
-| DELETE | `/economic-records/:recordId` | Delete economic record |
-| DELETE | `/poverty-records/:recordId` | Delete poverty record |
-| DELETE | `/black-market-records/:recordId` | Delete black market record |
-| DELETE | `/war-cost-records/:recordId` | Delete war cost record |
-| DELETE | `/reconstruction-records/:recordId` | Delete reconstruction record |
-| DELETE | `/inflation-records/:recordId` | Delete inflation record |
-| DELETE | `/unemployment-records/:recordId` | Delete unemployment record |
-
----
-
-### 🔹 Authentication Routes (`/auth`) — 8 endpoints
-
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/auth/register` | Register new user |
-| POST | `/auth/login` | Login and receive JWT |
-| POST | `/auth/logout` | Logout user |
-| POST | `/auth/forgot-password` | Request password reset |
-| POST | `/auth/reset-password` | Reset password |
-| POST | `/auth/refresh-token` | Refresh JWT token |
-| GET | `/auth/me` | Get authenticated user |
-| DELETE | `/auth/account` | Delete user account |
-
----
-
-### 🔹 JWT Routes (`/jwt`) — 8 endpoints
-
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/jwt/profile` | JWT protected profile |
-| GET | `/jwt/dashboard` | JWT protected dashboard |
-| POST | `/jwt/generate-token` | Generate JWT token |
-| POST | `/jwt/verify-token` | Verify JWT token |
-| POST | `/jwt/refresh-token` | Refresh JWT token |
-| GET | `/jwt/admin` | Admin-only JWT route |
-| GET | `/jwt/user` | User-only JWT route |
-| DELETE | `/jwt/logout` | JWT logout |
-
----
-
-### 🔹 Admin / Protected Routes — 8 endpoints
-
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/admin/conflicts` | Admin — fetch all conflicts |
-| POST | `/admin/conflicts` | Admin — create conflict |
-| DELETE | `/admin/conflicts/:conflictId` | Admin — delete conflict |
-| PATCH | `/admin/conflicts/:conflictId` | Admin — update conflict |
-| GET | `/admin/dashboard` | Admin dashboard |
-| GET | `/protected/conflicts` | Protected fetch |
-| POST | `/protected/conflicts` | Protected create |
-| DELETE | `/protected/conflicts/:conflictId` | Protected delete |
-
----
-
-### 🔹 Advanced Routes — 14 endpoints
-
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/conflicts/top/highest-inflation` | Top highest inflation conflicts |
-| GET | `/conflicts/top/highest-poverty` | Top highest poverty conflicts |
-| GET | `/conflicts/recent` | Recently added conflicts |
-| GET | `/conflicts/latest` | Latest conflicts |
-| GET | `/conflicts/random` | Random conflict |
-| GET | `/conflicts/trending` | Trending conflicts |
-| GET | `/conflicts/ongoing` | All ongoing conflicts |
-| GET | `/conflicts/resolved` | All resolved conflicts |
-| GET | `/conflicts/high-risk` | High risk conflicts |
-| GET | `/conflicts/economic-collapse` | Economic collapse conflicts |
-| GET | `/health` | API health check |
-| GET | `/version` | API version info |
-| GET | `/compare?conflict1=WWII&conflict2=Ukraine` | Compare two conflicts |
-| GET | `/conflicts/summary/ai` | AI-generated conflict summary |
-
----
-
-### 🔹 HEAD & OPTIONS Routes — 12 endpoints
-
-| Method | Endpoint | Description |
-|---|---|---|
-| HEAD | `/conflicts` | Headers only for conflicts collection |
-| HEAD | `/conflicts/:conflictId` | Headers for single conflict |
-| HEAD | `/stats/total-conflicts` | Metadata for stats endpoint |
-| HEAD | `/auth/me` | Verify auth session headers |
-| HEAD | `/health` | Health check headers only |
-| OPTIONS | `/conflicts` | List supported methods |
-| OPTIONS | `/conflicts/:conflictId` | Allowed methods for resource |
-| OPTIONS | `/auth/login` | Auth endpoint methods |
-| OPTIONS | `/admin/conflicts` | Admin route methods |
-| OPTIONS | `/search` | Search endpoint methods |
-| OPTIONS | `/jwt/profile` | JWT route options |
-| OPTIONS | `/health` | API capabilities |
-
----
-
-### 🔹 Combined Query + Pagination + Sorting Examples
-
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/conflicts?status=Ongoing&page=1&limit=10&sort=-Inflation_Rate_%` | Ongoing sorted by inflation |
-| GET | `/conflicts?region=Europe&page=2&limit=5` | Paginated Europe conflicts |
-| GET | `/conflicts?country=Japan&sort=-GDP_Change_%` | Japan sorted by GDP |
-| GET | `/conflicts?type=World War&page=1&limit=20` | Paginated World Wars |
-| GET | `/conflicts?blackMarket=High&sort=-Currency_Black_Market_Rate_Gap_%` | High black market sorted |
-| GET | `/conflicts?inflationAbove=50&page=1&limit=10` | High inflation paginated |
-| GET | `/conflicts?povertyAbove=20&sort=-Extreme_Poverty_Rate_%` | High poverty sorted |
-| GET | `/conflicts?sector=Energy&page=2&limit=10` | Energy sector paginated |
-| GET | `/conflicts?profiteering=Yes&sort=-Cost_of_War_USD` | Profiteering sorted by cost |
-| GET | `/conflicts?country=Ukraine&status=Ongoing&page=1&limit=5` | Ukraine ongoing paginated |
-
----
-
-## ⚙️ Environment Variables
-
-Create a `.env` file in the root directory:
+### Environment Variables
 
 ```env
 # Server
@@ -461,99 +210,334 @@ RATE_LIMIT_MAX=100
 
 ---
 
-## 🚀 Getting Started
+## 📡 API Reference
 
-### Prerequisites
+> **Base URL:** `http://localhost:5000`  
+> **Total Endpoints:** 200 across 14 categories
 
-- Node.js v18+
-- MongoDB (local or Atlas)
-- npm
+---
 
-### Installation
+### 🔹 Core CRUD — `/conflicts`
 
-```bash
-# 1. Clone the repository
-git clone https://github.com/princenayakpara/war_economic_impact_dataset_nayakpara_prince.git
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/conflicts` | Fetch all conflicts |
+| `GET` | `/conflicts/:conflictId` | Fetch by ID |
+| `POST` | `/conflicts` | Create a new conflict record |
+| `PUT` | `/conflicts/:conflictId` | Replace full conflict document |
+| `PATCH` | `/conflicts/:conflictId` | Partially update a conflict |
+| `DELETE` | `/conflicts/:conflictId` | Delete a conflict |
 
-# 2. Navigate into the project
-cd war_economic_impact_dataset_nayakpara_prince
+---
 
-# 3. Navigate into backend
-cd backend
+### 🔹 Route Parameters — 37 endpoints
 
-# 4. Install dependencies
-npm install
+Filter conflicts by specific field values directly in the URL path.
 
-# 5. Setup environment
-cp .env.example .env
-# Edit .env with your MongoDB URI and JWT secret
-
-# 6. Start development server
-npm run dev
+```
+GET /conflicts/name/:name
+GET /conflicts/type/:type
+GET /conflicts/region/:region
+GET /conflicts/country/:country
+GET /conflicts/status/:status
+GET /conflicts/start-year/:year
+GET /conflicts/end-year/:year
+GET /conflicts/inflation/:rate
+GET /conflicts/gdp-loss/:percentage
+GET /conflicts/poverty/:rate
+GET /conflicts/extreme-poverty/:rate
+GET /conflicts/food-insecurity/:rate
+GET /conflicts/unemployment/:rate
+GET /conflicts/youth-unemployment/:rate
+GET /conflicts/sector/:sector
+GET /conflicts/black-market/:level
+GET /conflicts/black-market-goods/:goods
+GET /conflicts/profiteering/:status
+GET /conflicts/currency-gap/:gap
+GET /conflicts/reconstruction-cost/:amount
+GET /conflicts/cost-of-war/:amount
+GET /conflicts/informal-economy/pre/:value
+GET /conflicts/informal-economy/during/:value
+GET /conflicts/households/:count
 ```
 
-### Scripts
+**Region & Country Utilities**
+```
+GET /conflicts/region/:region/latest        # Most recent conflict in a region
+GET /conflicts/region/:region/oldest        # Earliest conflict in a region
+GET /conflicts/country/:country/history     # Full conflict history for a country
+GET /conflicts/type/:type/count             # Count conflicts by type
+GET /conflicts/status/:status/count         # Count by status
+GET /conflicts/year/:year                   # Conflicts active in a given year
+```
 
-| Command | Description |
+**War-Specific Deep Dives**
+```
+GET /conflicts/war/:name/summary
+GET /conflicts/war/:name/economic-impact
+GET /conflicts/war/:name/poverty-impact
+GET /conflicts/war/:name/black-market
+GET /conflicts/war/:name/reconstruction
+GET /conflicts/war/:name/currency-crisis
+GET /conflicts/war/:name/unemployment
+```
+
+---
+
+### 🔹 Query Parameters — 29 endpoints
+
+Flexible filtering, ranging, and sorting via query strings.
+
+**Filtering**
+```
+GET /conflicts?status=Ongoing
+GET /conflicts?region=Europe
+GET /conflicts?country=Japan
+GET /conflicts?type=World%20War
+GET /conflicts?sector=Agriculture
+GET /conflicts?blackMarket=High
+GET /conflicts?profiteering=Yes
+GET /conflicts?year=2022
+```
+
+**Threshold Filters**
+```
+GET /conflicts?inflationAbove=50
+GET /conflicts?inflationBelow=20
+GET /conflicts?gdpLossAbove=30
+GET /conflicts?povertyAbove=25
+GET /conflicts?foodInsecurityAbove=20
+GET /conflicts?currencyGapAbove=100
+GET /conflicts?warCostAbove=1000000000
+GET /conflicts?reconstructionAbove=5000000000
+```
+
+**Range Filters**
+```
+GET /conflicts?minInflation=20&maxInflation=80
+GET /conflicts?minGDP=-50&maxGDP=-20
+GET /conflicts?minPoverty=10&maxPoverty=40
+GET /conflicts?minUnemployment=5&maxUnemployment=30
+```
+
+**Sorting**
+```
+GET /conflicts?sort=Inflation_Rate_%        # Ascending
+GET /conflicts?sort=-GDP_Change_%           # Descending (prefix with -)
+GET /conflicts?sort=Start_Year
+GET /conflicts?sort=-Estimated_Reconstruction_Cost_USD
+GET /conflicts?sort=Conflict_Name          # Alphabetical
+```
+
+---
+
+### 🔹 Pagination — 10 endpoints
+
+```
+GET /conflicts?page=1&limit=10
+GET /conflicts?page=2&limit=20
+GET /conflicts/ongoing?page=1&limit=5
+GET /conflicts/resolved?page=2&limit=10
+GET /conflicts/europe?page=1&limit=15
+GET /conflicts/asia?page=1&limit=15
+GET /conflicts/high-inflation?page=1&limit=10
+GET /conflicts/high-poverty?page=1&limit=10
+GET /conflicts/high-gdp-loss?page=1&limit=10
+GET /conflicts/black-market/high?page=1&limit=5
+```
+
+---
+
+### 🔹 Combined Query Examples
+
+```
+# Ongoing conflicts sorted by highest inflation, page 1
+GET /conflicts?status=Ongoing&page=1&limit=10&sort=-Inflation_Rate_%
+
+# Paginated Europe conflicts
+GET /conflicts?region=Europe&page=2&limit=5
+
+# Japan sorted by GDP loss
+GET /conflicts?country=Japan&sort=-GDP_Change_%
+
+# High black market activity sorted by currency gap
+GET /conflicts?blackMarket=High&sort=-Currency_Black_Market_Rate_Gap_%
+
+# Ukraine — ongoing, paginated
+GET /conflicts?country=Ukraine&status=Ongoing&page=1&limit=5
+```
+
+---
+
+### 🔹 Search — `/search` — 13 endpoints
+
+```
+GET /search?keyword=Japan
+GET /search?keyword=World%20War
+GET /search/conflicts?country=Germany
+GET /search/conflicts?region=Africa
+GET /search/conflicts?type=Civil%20War
+GET /search/conflicts?status=Resolved
+GET /search/economic?inflation=100
+GET /search/economic?poverty=30
+GET /search/economic?gdp=-40
+GET /search/economic?currency=50
+GET /search/sector?name=Agriculture
+GET /search/black-market?goods=fuel
+GET /search/black-market?goods=weapons
+```
+
+---
+
+### 🔹 Statistics — `/stats` — 10 endpoints
+
+```
+GET /stats/total-conflicts
+GET /stats/ongoing-conflicts
+GET /stats/resolved-conflicts
+GET /stats/highest-inflation
+GET /stats/lowest-gdp
+GET /stats/highest-poverty
+GET /stats/highest-food-insecurity
+GET /stats/highest-currency-gap
+GET /stats/highest-war-cost
+GET /stats/highest-reconstruction-cost
+```
+
+---
+
+### 🔹 Advanced Routes — 14 endpoints
+
+```
+GET /conflicts/top/highest-inflation
+GET /conflicts/top/highest-poverty
+GET /conflicts/recent
+GET /conflicts/latest
+GET /conflicts/random
+GET /conflicts/trending
+GET /conflicts/ongoing
+GET /conflicts/resolved
+GET /conflicts/high-risk
+GET /conflicts/economic-collapse
+GET /conflicts/summary/ai               # AI-generated conflict summary
+GET /compare?conflict1=WWII&conflict2=Ukraine
+GET /health
+GET /version
+```
+
+---
+
+### 🔒 Authentication — `/auth` — 8 endpoints
+
+```
+POST   /auth/register          # Create a new account
+POST   /auth/login             # Authenticate and receive JWT
+POST   /auth/logout            # Invalidate session
+POST   /auth/forgot-password   # Initiate password reset
+POST   /auth/reset-password    # Complete password reset
+POST   /auth/refresh-token     # Refresh access token
+GET    /auth/me                # Fetch authenticated user profile
+DELETE /auth/account           # Permanently delete account
+```
+
+---
+
+### 🔑 JWT Routes — `/jwt` — 8 endpoints
+
+```
+GET    /jwt/profile
+GET    /jwt/dashboard
+POST   /jwt/generate-token
+POST   /jwt/verify-token
+POST   /jwt/refresh-token
+GET    /jwt/admin              # Admin-only
+GET    /jwt/user               # Authenticated users
+DELETE /jwt/logout
+```
+
+---
+
+### 🛡️ Admin / Protected Routes — 8 endpoints
+
+```
+GET    /admin/conflicts
+POST   /admin/conflicts
+DELETE /admin/conflicts/:conflictId
+PATCH  /admin/conflicts/:conflictId
+GET    /admin/dashboard
+GET    /protected/conflicts
+POST   /protected/conflicts
+DELETE /protected/conflicts/:conflictId
+```
+
+---
+
+### 📝 POST / PUT / PATCH / DELETE — 30 endpoints
+
+Full write access for conflict records and related sub-resources.
+
+| Category | Methods |
 |---|---|
-| `npm run dev` | Start with nodemon (development) |
-| `npm start` | Start in production mode |
+| Conflicts | `POST`, `PUT`, `PATCH /status`, `PATCH /inflation`, `PATCH /gdp`, `PATCH /poverty`, `PATCH /unemployment`, `PATCH /sector`, `DELETE` |
+| Countries / Regions | `POST`, `PUT`, `DELETE` |
+| Economic Records | `POST`, `PUT`, `DELETE` |
+| Poverty / Inflation / Unemployment Records | `POST`, `DELETE` each |
+| Black Market / War Cost / Reconstruction Records | `POST`, `DELETE` each |
 
 ---
 
-## 🔒 Middleware Overview
+### 🌐 HEAD & OPTIONS — 12 endpoints
 
-| Middleware | Purpose |
+```
+HEAD    /conflicts
+HEAD    /conflicts/:conflictId
+HEAD    /stats/total-conflicts
+HEAD    /auth/me
+HEAD    /health
+
+OPTIONS /conflicts
+OPTIONS /conflicts/:conflictId
+OPTIONS /auth/login
+OPTIONS /admin/conflicts
+OPTIONS /search
+OPTIONS /jwt/profile
+OPTIONS /health
+```
+
+---
+
+## 🔒 Middleware
+
+| Middleware | File | Purpose |
+|---|---|---|
+| JWT Auth | `authMiddleware.js` | Verifies access tokens on protected routes |
+| Admin Guard | `adminMiddleware.js` | Enforces admin role for `/admin/*` routes |
+| Validation | `validateMiddleware.js` | Validates all POST/PATCH request bodies |
+| Rate Limiter | `rateLimiter.js` | Caps requests per IP window to prevent abuse |
+
+---
+
+## ✅ Validation Rules
+
+All `POST` and `PATCH` requests are validated against the following rules:
+
+| Field | Rules |
 |---|---|
-| `authMiddleware.js` | Verifies JWT tokens on protected routes |
-| `adminMiddleware.js` | Checks admin role authorization |
-| `validateMiddleware.js` | Validates request body fields |
-| `rateLimiter.js` | Prevents abuse via rate limiting |
+| `Conflict_Name` | Required, non-empty string |
+| `Conflict_Type` | Required, valid string |
+| `Country` | Required, string |
+| `Region` | Required, string |
+| `Start_Year` | Required, valid 4-digit year |
+| `End_Year` | Optional; must be `>= Start_Year` if provided |
+| `Status` | Must be exactly `Ongoing` or `Resolved` |
+| `GDP_Change_%` | Number (negative values allowed) |
+| `Inflation_Rate_%` | Number, `>= 0` |
+| `Poverty_Rate_%` | Number, range `0–100` |
+| All unemployment/poverty fields | Number, range `0–100` |
 
 ---
 
-## 📋 Validation Rules
-
-All `POST` and `PATCH` requests validate:
-
-- `Conflict_Name` — required, non-empty string
-- `Conflict_Type` — required, valid string
-- `Country` — required, string
-- `Region` — required, string
-- `Start_Year` — required, valid 4-digit year number
-- `End_Year` — optional, must be `>= Start_Year` if provided
-- `Status` — must be exactly `Ongoing` or `Resolved`
-- `GDP_Change_%` — number (can be negative)
-- `Inflation_Rate_%` — number, >= 0
-- `Poverty_Rate_%` — number, range 0–100
-- All unemployment/poverty fields — number, range 0–100
-
----
-
-## 🧪 PR Strategy — One Route = One PR
-
-| PR # | Content |
-|---|---|
-| PR #1 | `README.md` ✅ |
-| PR #2 | Backend folder structure (scaffold) |
-| PR #3 | Basic CRUD routes |
-| PR #4 | Route parameter routes |
-| PR #5 | Query parameter routes |
-| PR #6 | Pagination routes |
-| PR #7 | Sorting routes |
-| PR #8 | Search routes |
-| PR #9 | Statistics routes |
-| PR #10 | POST / PUT / PATCH / DELETE routes |
-| PR #11 | Auth routes |
-| PR #12 | JWT routes |
-| PR #13 | Admin / Protected routes |
-| PR #14 | Advanced routes |
-| PR #15 | Middleware (rate limiting, validation, error handling) |
-| PR #16 | HEAD & OPTIONS routes |
-
----
-
-## 📈 Route Statistics
+## 📈 Endpoint Summary
 
 | Category | Count |
 |---|---|
@@ -575,15 +559,40 @@ All `POST` and `PATCH` requests validate:
 
 ---
 
-## 🏷️ Topics
+## 🧪 Development Workflow
 
-`nodejs` · `mongodb` · `mongoose` · `expressjs` · `jwt-authentication` · `rest-api` · `express-validator` · `mvc-architecture` · `war-data` · `economic-impact`
+This project follows a **one route category = one PR** strategy for clean, reviewable history.
+
+| PR | Scope |
+|---|---|
+| #1 | `README.md` |
+| #2 | Backend scaffold & folder structure |
+| #3 | Basic CRUD routes |
+| #4 | Route parameter routes |
+| #5 | Query parameter routes |
+| #6 | Pagination routes |
+| #7 | Sorting routes |
+| #8 | Search routes |
+| #9 | Statistics routes |
+| #10 | POST / PUT / PATCH / DELETE routes |
+| #11 | Auth routes |
+| #12 | JWT routes |
+| #13 | Admin / Protected routes |
+| #14 | Advanced routes |
+| #15 | Middleware (rate limiting, validation, error handling) |
+| #16 | HEAD & OPTIONS routes |
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome. Please follow the one-PR-per-feature convention, ensure all routes are tested in Postman before submission, and open an issue to discuss major changes beforehand.
 
 ---
 
 ## 📄 License
 
-This project is developed for academic purposes as part of **CodingGita**.
+Developed for academic purposes as part of **[CodingGita](https://github.com/codinggita)**.
 
 ---
 
@@ -591,3 +600,11 @@ This project is developed for academic purposes as part of **CodingGita**.
 
 - Forked from [codinggita/war_economic_impact_dataset_nayakpara_prince](https://github.com/codinggita/war_economic_impact_dataset_nayakpara_prince)
 - Built and extended by [Prince Nayakpara](https://github.com/princenayakpara)
+
+---
+
+<div align="center">
+
+Made with dedication by **Prince Nayakpara** · CodingGita
+
+</div>
