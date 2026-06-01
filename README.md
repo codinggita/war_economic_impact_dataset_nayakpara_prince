@@ -1,5 +1,9 @@
 # ⚔️ War Economic Impact — Full Stack REST API
 
+> *"Wars not only destroy lives — they collapse economies, inflate currencies, push millions into poverty, and leave scars on nations for generations. This dataset tells that story with data."*
+
+---
+
 ## 📌 Project Overview
 
 This project is a production-ready **Full Stack RESTful API** built around the **War Economic Impact Dataset** — a structured collection of data capturing the economic consequences of major armed conflicts worldwide.
@@ -16,12 +20,16 @@ The backend is built following strict **MVC (Model-View-Controller) Architecture
 |---|---|
 | **Name** | Prince Nayakpara |
 | **GitHub Username** | princenayakpara |
+| **Repository** | war_economic_impact_dataset_nayakpara_prince |
+| **Organization** | CodingGita |
+
+---
 
 ## 🧰 Tech Stack
 
 | Layer | Technology |
 |---|---|
-| **Runtime** | Node.js |
+| **Runtime** | Node.js v18+ |
 | **Framework** | Express.js |
 | **Database** | MongoDB |
 | **ODM** | Mongoose |
@@ -31,6 +39,7 @@ The backend is built following strict **MVC (Model-View-Controller) Architecture
 | **Environment** | dotenv |
 | **Dev Tool** | nodemon |
 | **API Testing** | Postman |
+| **Language** | JavaScript (100%) |
 
 ---
 
@@ -82,7 +91,7 @@ war_economic_impact_dataset/
 
 **Collection Name:** `conflicts`
 
-Each document represents one armed conflict and its full economic impact profile:
+Each document represents one armed conflict and its full economic impact profile.
 
 | Field | Type | Description |
 |---|---|---|
@@ -115,7 +124,9 @@ Each document represents one armed conflict and its full economic impact profile
 
 ---
 
-## 🌐 API Routes Summary
+## 📊 API Routes Summary
+
+> **Total Routes: 200** across 14 categories
 
 ### 🔹 Basic CRUD Routes (`/conflicts`)
 
@@ -130,7 +141,7 @@ Each document represents one armed conflict and its full economic impact profile
 
 ---
 
-### 🔹 Route Parameter Routes
+### 🔹 Route Parameter Routes (37 endpoints)
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -176,7 +187,7 @@ Each document represents one armed conflict and its full economic impact profile
 
 ---
 
-### 🔹 Query Parameter Routes
+### 🔹 Query Parameter Routes (29 endpoints)
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -209,11 +220,10 @@ Each document represents one armed conflict and its full economic impact profile
 | GET | `/conflicts?sort=Start_Year` | Sort by start year |
 | GET | `/conflicts?sort=-Estimated_Reconstruction_Cost_USD` | Sort by reconstruction cost |
 | GET | `/conflicts?keyword=war` | Keyword search |
-| GET | `/conflicts?keyword=Japan` | Keyword search by country |
 
 ---
 
-### 🔹 Pagination Routes
+### 🔹 Pagination Routes (10 endpoints)
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -230,7 +240,7 @@ Each document represents one armed conflict and its full economic impact profile
 
 ---
 
-### 🔹 Sorting Routes
+### 🔹 Sorting Routes (15 endpoints)
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -252,7 +262,7 @@ Each document represents one armed conflict and its full economic impact profile
 
 ---
 
-### 🔹 Search Routes (`/search`)
+### 🔹 Search Routes (`/search`) — 13 endpoints
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -272,7 +282,7 @@ Each document represents one armed conflict and its full economic impact profile
 
 ---
 
-### 🔹 Statistics Routes (`/stats`)
+### 🔹 Statistics Routes (`/stats`) — 10 endpoints
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -289,7 +299,7 @@ Each document represents one armed conflict and its full economic impact profile
 
 ---
 
-### 🔹 POST / PUT / PATCH / DELETE Routes
+### 🔹 POST / PUT / PATCH / DELETE Routes (30 endpoints)
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -326,7 +336,7 @@ Each document represents one armed conflict and its full economic impact profile
 
 ---
 
-### 🔹 Authentication Routes (`/auth`)
+### 🔹 Authentication Routes (`/auth`) — 8 endpoints
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -341,7 +351,7 @@ Each document represents one armed conflict and its full economic impact profile
 
 ---
 
-### 🔹 JWT Routes (`/jwt`)
+### 🔹 JWT Routes (`/jwt`) — 8 endpoints
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -356,7 +366,7 @@ Each document represents one armed conflict and its full economic impact profile
 
 ---
 
-### 🔹 Admin / Protected Routes
+### 🔹 Admin / Protected Routes — 8 endpoints
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -371,7 +381,7 @@ Each document represents one armed conflict and its full economic impact profile
 
 ---
 
-### 🔹 Advanced Routes
+### 🔹 Advanced Routes — 14 endpoints
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -392,7 +402,7 @@ Each document represents one armed conflict and its full economic impact profile
 
 ---
 
-### 🔹 HEAD & OPTIONS Routes
+### 🔹 HEAD & OPTIONS Routes — 12 endpoints
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -454,6 +464,7 @@ RATE_LIMIT_MAX=100
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js v18+
 - MongoDB (local or Atlas)
 - npm
@@ -461,20 +472,23 @@ RATE_LIMIT_MAX=100
 ### Installation
 
 ```bash
-# 1. Clone the forked repository
-git clone https://github.com/<your-username>/war_economic_impact_dataset.git
+# 1. Clone the repository
+git clone https://github.com/princenayakpara/war_economic_impact_dataset_nayakpara_prince.git
 
 # 2. Navigate into the project
-cd war_economic_impact_dataset
+cd war_economic_impact_dataset_nayakpara_prince
 
-# 3. Install dependencies
+# 3. Navigate into backend
+cd backend
+
+# 4. Install dependencies
 npm install
 
-# 4. Setup environment
+# 5. Setup environment
 cp .env.example .env
-# Edit .env with your values
+# Edit .env with your MongoDB URI and JWT secret
 
-# 5. Start development server
+# 6. Start development server
 npm run dev
 ```
 
@@ -491,7 +505,7 @@ npm run dev
 
 | Middleware | Purpose |
 |---|---|
-| `authMiddleware.js` | Verifies JWT on protected routes |
+| `authMiddleware.js` | Verifies JWT tokens on protected routes |
 | `adminMiddleware.js` | Checks admin role authorization |
 | `validateMiddleware.js` | Validates request body fields |
 | `rateLimiter.js` | Prevents abuse via rate limiting |
@@ -507,16 +521,16 @@ All `POST` and `PATCH` requests validate:
 - `Country` — required, string
 - `Region` — required, string
 - `Start_Year` — required, valid 4-digit year number
-- `End_Year` — optional, must be >= `Start_Year`
-- `Status` — must be `Ongoing` or `Resolved`
+- `End_Year` — optional, must be `>= Start_Year` if provided
+- `Status` — must be exactly `Ongoing` or `Resolved`
 - `GDP_Change_%` — number (can be negative)
 - `Inflation_Rate_%` — number, >= 0
-- `Poverty_Rate_%` — number, 0–100
-- All unemployment/poverty fields — number, 0–100
+- `Poverty_Rate_%` — number, range 0–100
+- All unemployment/poverty fields — number, range 0–100
 
 ---
 
-## 🧪 PR Strategy (One Route = One PR)
+## 🧪 PR Strategy — One Route = One PR
 
 | PR # | Content |
 |---|---|
@@ -539,10 +553,41 @@ All `POST` and `PATCH` requests validate:
 
 ---
 
-## 📄 License
+## 📈 Route Statistics
 
-This project is developed for academic purposes as part of the **CodingGita**.
+| Category | Count |
+|---|---|
+| Basic CRUD | 6 |
+| Route Parameters | 37 |
+| Query Parameters | 29 |
+| Pagination | 10 |
+| Sorting | 15 |
+| Search | 13 |
+| Statistics | 10 |
+| POST / PUT / PATCH / DELETE | 30 |
+| Authentication | 8 |
+| JWT | 8 |
+| Admin / Protected | 8 |
+| Advanced | 14 |
+| HEAD & OPTIONS | 12 |
+| Combined Examples | 10 |
+| **Total** | **200** |
 
 ---
 
-> _"Wars not only destroy lives — they collapse economies, inflate currencies, push millions into poverty, and leave scars on nations for generations. This dataset tells that story with data."_
+## 🏷️ Topics
+
+`nodejs` · `mongodb` · `mongoose` · `expressjs` · `jwt-authentication` · `rest-api` · `express-validator` · `mvc-architecture` · `war-data` · `economic-impact`
+
+---
+
+## 📄 License
+
+This project is developed for academic purposes as part of **CodingGita**.
+
+---
+
+## 🙏 Acknowledgements
+
+- Forked from [codinggita/war_economic_impact_dataset_nayakpara_prince](https://github.com/codinggita/war_economic_impact_dataset_nayakpara_prince)
+- Built and extended by [Prince Nayakpara](https://github.com/princenayakpara)
