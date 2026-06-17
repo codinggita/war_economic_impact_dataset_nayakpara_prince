@@ -21,10 +21,10 @@ const searchByKeyword = asyncHandler(async (req, res) => {
     $or: [
       { Conflict_Name: regex },
       { Conflict_Type: regex },
-      { Country: regex },
+      { Primary_Country: regex },
       { Region: regex },
-      { Affected_Sector: regex },
-      { Black_Market_Goods: regex },
+      { Most_Affected_Sector: regex },
+      { Primary_Black_Market_Goods: regex },
       { Status: regex },
     ],
     isDeleted: { $ne: true },
@@ -41,7 +41,7 @@ const searchConflicts = asyncHandler(async (req, res) => {
   const { country, region, type, status } = req.query;
   const filter = { isDeleted: { $ne: true } };
 
-  if (country) filter.Country = new RegExp(country, "i");
+  if (country) filter.Primary_Country = new RegExp(country, "i");
   if (region) filter.Region = new RegExp(region, "i");
   if (type) filter.Conflict_Type = new RegExp(type, "i");
   if (status) filter.Status = status;
@@ -62,7 +62,7 @@ const searchEconomic = asyncHandler(async (req, res) => {
     filter["Inflation_Rate_%"] = { $gte: parseFloat(inflation) };
   }
   if (poverty) {
-    filter["Poverty_Rate_%"] = { $gte: parseFloat(poverty) };
+    filter["During_War_Poverty_Rate_%"] = { $gte: parseFloat(poverty) };
   }
   if (gdp) {
     filter["GDP_Change_%"] = { $lte: parseFloat(gdp) };
@@ -84,7 +84,7 @@ const searchBySector = asyncHandler(async (req, res) => {
   }
 
   const data = await Conflict.find({
-    Affected_Sector: new RegExp(name, "i"),
+    Most_Affected_Sector: new RegExp(name, "i"),
     isDeleted: { $ne: true },
   }).sort({ "GDP_Change_%": 1 });
 
@@ -101,7 +101,7 @@ const searchBlackMarket = asyncHandler(async (req, res) => {
   }
 
   const data = await Conflict.find({
-    Black_Market_Goods: new RegExp(goods, "i"),
+    Primary_Black_Market_Goods: new RegExp(goods, "i"),
     isDeleted: { $ne: true },
   }).sort({ "Currency_Black_Market_Rate_Gap_%": -1 });
 

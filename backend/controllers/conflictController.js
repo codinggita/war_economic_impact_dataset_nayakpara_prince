@@ -92,7 +92,7 @@ const getByStatus = asyncHandler(async (req, res) => {
 
 /** @route GET /conflicts/country/:country */
 const getByCountry = asyncHandler(async (req, res) => {
-  const result = await conflictService.findByField("Country", req.params.country, req.query);
+  const result = await conflictService.findByField("Primary_Country", req.params.country, req.query);
   sendSuccess(res, 200, "Conflicts fetched by country", result.data, result.pagination);
 });
 
@@ -126,7 +126,7 @@ const getByGdpLoss = asyncHandler(async (req, res) => {
 
 /** @route GET /conflicts/poverty/:rate */
 const getByPoverty = asyncHandler(async (req, res) => {
-  const result = await conflictService.findAboveThreshold("Poverty_Rate_%", req.params.rate, req.query);
+  const result = await conflictService.findAboveThreshold("During_War_Poverty_Rate_%", req.params.rate, req.query);
   sendSuccess(res, 200, "Conflicts fetched by poverty rate", result.data, result.pagination);
 });
 
@@ -150,26 +150,26 @@ const getByUnemployment = asyncHandler(async (req, res) => {
 
 /** @route GET /conflicts/youth-unemployment/:rate */
 const getByYouthUnemployment = asyncHandler(async (req, res) => {
-  const result = await conflictService.findAboveThreshold("Youth_Unemployment_%", req.params.rate, req.query);
+  const result = await conflictService.findAboveThreshold("Youth_Unemployment_Change_%", req.params.rate, req.query);
   sendSuccess(res, 200, "Conflicts fetched by youth unemployment rate", result.data, result.pagination);
 });
 
 /** @route GET /conflicts/sector/:sector */
 const getBySector = asyncHandler(async (req, res) => {
-  const result = await conflictService.findByField("Affected_Sector", req.params.sector, req.query);
+  const result = await conflictService.findByField("Most_Affected_Sector", req.params.sector, req.query);
   sendSuccess(res, 200, "Conflicts fetched by sector", result.data, result.pagination);
 });
 
 /** @route GET /conflicts/black-market/:level */
 const getByBlackMarketLevel = asyncHandler(async (req, res) => {
-  const result = await conflictService.findByField("Black_Market_Level", req.params.level, req.query);
+  const result = await conflictService.findByField("Black_Market_Activity_Level", req.params.level, req.query);
   sendSuccess(res, 200, "Conflicts fetched by black market level", result.data, result.pagination);
 });
 
 /** @route GET /conflicts/black-market-goods/:goods */
 const getByBlackMarketGoods = asyncHandler(async (req, res) => {
   const data = await Conflict.find({
-    Black_Market_Goods: new RegExp(req.params.goods, "i"),
+    Primary_Black_Market_Goods: new RegExp(req.params.goods, "i"),
     isDeleted: { $ne: true },
   });
   sendSuccess(res, 200, "Conflicts fetched by black market goods", data);
@@ -177,7 +177,7 @@ const getByBlackMarketGoods = asyncHandler(async (req, res) => {
 
 /** @route GET /conflicts/profiteering/:status */
 const getByProfiteering = asyncHandler(async (req, res) => {
-  const result = await conflictService.findByField("Profiteering", req.params.status, req.query);
+  const result = await conflictService.findByField("War_Profiteering_Documented", req.params.status, req.query);
   sendSuccess(res, 200, "Conflicts fetched by profiteering status", result.data, result.pagination);
 });
 
@@ -201,19 +201,19 @@ const getByCostOfWar = asyncHandler(async (req, res) => {
 
 /** @route GET /conflicts/informal-economy/pre/:value */
 const getByPreWarInformalEconomy = asyncHandler(async (req, res) => {
-  const result = await conflictService.findAboveThreshold("Pre_War_Informal_Economy_%", req.params.value, req.query);
+  const result = await conflictService.findAboveThreshold("Informal_Economy_Size_Pre_War_%", req.params.value, req.query);
   sendSuccess(res, 200, "Conflicts fetched by pre-war informal economy", result.data, result.pagination);
 });
 
 /** @route GET /conflicts/informal-economy/during/:value */
 const getByDuringWarInformalEconomy = asyncHandler(async (req, res) => {
-  const result = await conflictService.findAboveThreshold("During_War_Informal_Economy_%", req.params.value, req.query);
+  const result = await conflictService.findAboveThreshold("Informal_Economy_Size_During_War_%", req.params.value, req.query);
   sendSuccess(res, 200, "Conflicts fetched by wartime informal economy", result.data, result.pagination);
 });
 
 /** @route GET /conflicts/households/:count */
 const getByHouseholds = asyncHandler(async (req, res) => {
-  const result = await conflictService.findAboveThreshold("Households_Affected", req.params.count, req.query);
+  const result = await conflictService.findAboveThreshold("Households_Fallen_Into_Poverty_Estimate", req.params.count, req.query);
   sendSuccess(res, 200, "Conflicts fetched by affected households", result.data, result.pagination);
 });
 
@@ -244,7 +244,7 @@ const getOldestInRegion = asyncHandler(async (req, res) => {
 /** @route GET /conflicts/country/:country/history */
 const getCountryHistory = asyncHandler(async (req, res) => {
   const data = await Conflict.find({
-    Country: new RegExp(req.params.country, "i"),
+    Primary_Country: new RegExp(req.params.country, "i"),
     isDeleted: { $ne: true },
   }).sort({ Start_Year: 1 });
   sendSuccess(res, 200, `Conflict history of ${req.params.country}`, data);
@@ -282,7 +282,7 @@ const getByActiveYear = asyncHandler(async (req, res) => {
 /** @route GET /conflicts/sector/:sector/highest-gdp-loss */
 const getHighestGdpLossInSector = asyncHandler(async (req, res) => {
   const conflict = await Conflict.findOne({
-    Affected_Sector: new RegExp(req.params.sector, "i"),
+    Most_Affected_Sector: new RegExp(req.params.sector, "i"),
     isDeleted: { $ne: true },
   }).sort({ "GDP_Change_%": 1 }); // most negative = highest loss
   if (!conflict) throw new AppError("No conflicts found in this sector", 404);
@@ -292,7 +292,7 @@ const getHighestGdpLossInSector = asyncHandler(async (req, res) => {
 /** @route GET /conflicts/sector/:sector/highest-inflation */
 const getHighestInflationInSector = asyncHandler(async (req, res) => {
   const conflict = await Conflict.findOne({
-    Affected_Sector: new RegExp(req.params.sector, "i"),
+    Most_Affected_Sector: new RegExp(req.params.sector, "i"),
     isDeleted: { $ne: true },
   }).sort({ "Inflation_Rate_%": -1 });
   if (!conflict) throw new AppError("No conflicts found in this sector", 404);
@@ -314,7 +314,7 @@ const getWarSummary = asyncHandler(async (req, res) => {
   const summary = {
     name: conflict.Conflict_Name,
     type: conflict.Conflict_Type,
-    country: conflict.Country,
+    country: conflict.Primary_Country,
     region: conflict.Region,
     period: `${conflict.Start_Year} - ${conflict.End_Year || "Ongoing"}`,
     status: conflict.Status,
@@ -340,9 +340,9 @@ const getWarEconomicImpact = asyncHandler(async (req, res) => {
     inflationRate: conflict["Inflation_Rate_%"],
     currencyDevaluation: conflict["Currency_Devaluation_%"],
     currencyBlackMarketGap: conflict["Currency_Black_Market_Rate_Gap_%"],
-    preWarInformalEconomy: conflict["Pre_War_Informal_Economy_%"],
-    duringWarInformalEconomy: conflict["During_War_Informal_Economy_%"],
-    affectedSector: conflict.Affected_Sector,
+    preWarInformalEconomy: conflict["Informal_Economy_Size_Pre_War_%"],
+    duringWarInformalEconomy: conflict["Informal_Economy_Size_During_War_%"],
+    mostAffectedSector: conflict.Most_Affected_Sector,
     costOfWar: conflict.Cost_of_War_USD,
   };
   sendSuccess(res, 200, "Economic impact", impact);
@@ -358,10 +358,11 @@ const getWarPovertyImpact = asyncHandler(async (req, res) => {
 
   const impact = {
     name: conflict.Conflict_Name,
-    povertyRate: conflict["Poverty_Rate_%"],
+    duringWarPovertyRate: conflict["During_War_Poverty_Rate_%"],
+    preWarPovertyRate: conflict["Pre_War_Poverty_Rate_%"],
     extremePovertyRate: conflict["Extreme_Poverty_Rate_%"],
     foodInsecurityRate: conflict["Food_Insecurity_Rate_%"],
-    householdsAffected: conflict.Households_Affected,
+    householdsFallenIntoPoverty: conflict.Households_Fallen_Into_Poverty_Estimate,
   };
   sendSuccess(res, 200, "Poverty impact", impact);
 });
@@ -376,9 +377,9 @@ const getWarBlackMarket = asyncHandler(async (req, res) => {
 
   const data = {
     name: conflict.Conflict_Name,
-    blackMarketLevel: conflict.Black_Market_Level,
-    blackMarketGoods: conflict.Black_Market_Goods,
-    profiteering: conflict.Profiteering,
+    blackMarketActivityLevel: conflict.Black_Market_Activity_Level,
+    primaryBlackMarketGoods: conflict.Primary_Black_Market_Goods,
+    warProfiteeringDocumented: conflict.War_Profiteering_Documented,
     currencyBlackMarketGap: conflict["Currency_Black_Market_Rate_Gap_%"],
   };
   sendSuccess(res, 200, "Black market data", data);
@@ -397,7 +398,7 @@ const getWarReconstruction = asyncHandler(async (req, res) => {
     status: conflict.Status,
     estimatedReconstructionCost: conflict.Estimated_Reconstruction_Cost_USD,
     costOfWar: conflict.Cost_of_War_USD,
-    householdsAffected: conflict.Households_Affected,
+    householdsFallenIntoPoverty: conflict.Households_Fallen_Into_Poverty_Estimate,
   };
   sendSuccess(res, 200, "Reconstruction details", data);
 });
@@ -431,7 +432,7 @@ const getWarUnemployment = asyncHandler(async (req, res) => {
     name: conflict.Conflict_Name,
     preWarUnemployment: conflict["Pre_War_Unemployment_%"],
     duringWarUnemployment: conflict["During_War_Unemployment_%"],
-    youthUnemployment: conflict["Youth_Unemployment_%"],
+    youthUnemploymentChange: conflict["Youth_Unemployment_Change_%"],
     unemploymentIncrease:
       conflict["During_War_Unemployment_%"] != null && conflict["Pre_War_Unemployment_%"] != null
         ? (conflict["During_War_Unemployment_%"] - conflict["Pre_War_Unemployment_%"]).toFixed(2)
@@ -471,7 +472,8 @@ const updateGdp = asyncHandler(async (req, res) => {
 /** @route PATCH /conflicts/:conflictId/poverty */
 const updatePoverty = asyncHandler(async (req, res) => {
   const conflict = await conflictService.updateConflict(req.params.conflictId, {
-    "Poverty_Rate_%": req.body["Poverty_Rate_%"],
+    "During_War_Poverty_Rate_%": req.body["During_War_Poverty_Rate_%"],
+    "Pre_War_Poverty_Rate_%": req.body["Pre_War_Poverty_Rate_%"],
     "Extreme_Poverty_Rate_%": req.body["Extreme_Poverty_Rate_%"],
     "Food_Insecurity_Rate_%": req.body["Food_Insecurity_Rate_%"],
   });
@@ -483,7 +485,7 @@ const updateUnemployment = asyncHandler(async (req, res) => {
   const conflict = await conflictService.updateConflict(req.params.conflictId, {
     "Pre_War_Unemployment_%": req.body["Pre_War_Unemployment_%"],
     "During_War_Unemployment_%": req.body["During_War_Unemployment_%"],
-    "Youth_Unemployment_%": req.body["Youth_Unemployment_%"],
+    "Youth_Unemployment_Change_%": req.body["Youth_Unemployment_Change_%"],
   });
   sendSuccess(res, 200, "Unemployment data updated successfully", conflict);
 });
@@ -491,7 +493,7 @@ const updateUnemployment = asyncHandler(async (req, res) => {
 /** @route PATCH /conflicts/:conflictId/sector */
 const updateSector = asyncHandler(async (req, res) => {
   const conflict = await conflictService.updateConflict(req.params.conflictId, {
-    Affected_Sector: req.body.Affected_Sector,
+    Most_Affected_Sector: req.body.Most_Affected_Sector,
   });
   sendSuccess(res, 200, "Sector updated successfully", conflict);
 });
@@ -513,7 +515,7 @@ const getTopHighestInflation = asyncHandler(async (req, res) => {
 const getTopHighestPoverty = asyncHandler(async (req, res) => {
   const limit = parseInt(req.query.limit) || 10;
   const data = await Conflict.find({ isDeleted: { $ne: true } })
-    .sort({ "Poverty_Rate_%": -1 })
+    .sort({ "During_War_Poverty_Rate_%": -1 })
     .limit(limit);
   sendSuccess(res, 200, "Top conflicts by poverty", data);
 });
@@ -604,7 +606,7 @@ const getHighRisk = asyncHandler(async (req, res) => {
   const filter = {
     $or: [
       { "Inflation_Rate_%": { $gt: 50 } },
-      { "Poverty_Rate_%": { $gt: 40 } },
+      { "During_War_Poverty_Rate_%": { $gt: 40 } },
     ],
     isDeleted: { $ne: true },
   };
@@ -662,13 +664,13 @@ const getAiSummary = asyncHandler(async (req, res) => {
         totalConflicts: { $sum: 1 },
         avgGdpChange: { $avg: "$GDP_Change_%" },
         avgInflation: { $avg: "$Inflation_Rate_%" },
-        avgPoverty: { $avg: "$Poverty_Rate_%" },
+        avgPoverty: { $avg: "$During_War_Poverty_Rate_%" },
         totalWarCost: { $sum: "$Cost_of_War_USD" },
         totalReconstructionCost: { $sum: "$Estimated_Reconstruction_Cost_USD" },
-        totalHouseholdsAffected: { $sum: "$Households_Affected" },
+        totalHouseholdsFallenIntoPoverty: { $sum: "$Households_Fallen_Into_Poverty_Estimate" },
         maxInflation: { $max: "$Inflation_Rate_%" },
         minGdp: { $min: "$GDP_Change_%" },
-        maxPoverty: { $max: "$Poverty_Rate_%" },
+        maxPoverty: { $max: "$During_War_Poverty_Rate_%" },
       },
     },
   ]);

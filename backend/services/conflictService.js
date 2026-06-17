@@ -16,11 +16,11 @@ const buildFilter = (query) => {
   // Exact match filters
   if (query.status) filter.Status = query.status;
   if (query.region) filter.Region = new RegExp(query.region, "i");
-  if (query.country) filter.Country = new RegExp(query.country, "i");
+  if (query.country) filter.Primary_Country = new RegExp(query.country, "i");
   if (query.type) filter.Conflict_Type = new RegExp(query.type, "i");
-  if (query.sector) filter.Affected_Sector = new RegExp(query.sector, "i");
-  if (query.blackMarket) filter.Black_Market_Level = query.blackMarket;
-  if (query.profiteering) filter.Profiteering = query.profiteering;
+  if (query.sector) filter.Most_Affected_Sector = new RegExp(query.sector, "i");
+  if (query.blackMarket) filter.Black_Market_Activity_Level = query.blackMarket;
+  if (query.profiteering) filter.War_Profiteering_Documented = query.profiteering;
 
   // Year filters
   if (query.year) {
@@ -49,7 +49,7 @@ const buildFilter = (query) => {
     filter["GDP_Change_%"] = { $lt: -Math.abs(parseFloat(query.gdpLossAbove)) };
   }
   if (query.povertyAbove) {
-    filter["Poverty_Rate_%"] = { $gt: parseFloat(query.povertyAbove) };
+    filter["During_War_Poverty_Rate_%"] = { $gt: parseFloat(query.povertyAbove) };
   }
   if (query.foodInsecurityAbove) {
     filter["Food_Insecurity_Rate_%"] = {
@@ -86,11 +86,11 @@ const buildFilter = (query) => {
       filter["GDP_Change_%"].$lte = parseFloat(query.maxGDP);
   }
   if (query.minPoverty || query.maxPoverty) {
-    filter["Poverty_Rate_%"] = filter["Poverty_Rate_%"] || {};
+    filter["During_War_Poverty_Rate_%"] = filter["During_War_Poverty_Rate_%"] || {};
     if (query.minPoverty)
-      filter["Poverty_Rate_%"].$gte = parseFloat(query.minPoverty);
+      filter["During_War_Poverty_Rate_%"].$gte = parseFloat(query.minPoverty);
     if (query.maxPoverty)
-      filter["Poverty_Rate_%"].$lte = parseFloat(query.maxPoverty);
+      filter["During_War_Poverty_Rate_%"].$lte = parseFloat(query.maxPoverty);
   }
   if (query.minUnemployment || query.maxUnemployment) {
     filter["During_War_Unemployment_%"] =
@@ -113,10 +113,10 @@ const buildFilter = (query) => {
     filter.$or = [
       { Conflict_Name: keywordRegex },
       { Conflict_Type: keywordRegex },
-      { Country: keywordRegex },
+      { Primary_Country: keywordRegex },
       { Region: keywordRegex },
-      { Affected_Sector: keywordRegex },
-      { Black_Market_Goods: keywordRegex },
+      { Most_Affected_Sector: keywordRegex },
+      { Primary_Black_Market_Goods: keywordRegex },
     ];
   }
 

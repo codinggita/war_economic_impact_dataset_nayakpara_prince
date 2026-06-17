@@ -11,18 +11,11 @@ const conflictSchema = new mongoose.Schema(
       type: String,
       required: [true, "Conflict type is required"],
       trim: true,
-      // e.g. Civil War, World War, Interstate, Proxy War, etc.
-    },
-    Country: {
-      type: String,
-      required: [true, "Country is required"],
-      trim: true,
     },
     Region: {
       type: String,
       required: [true, "Region is required"],
       trim: true,
-      // e.g. Europe, Middle East, Asia, Africa, Americas
     },
     Start_Year: {
       type: Number,
@@ -30,36 +23,17 @@ const conflictSchema = new mongoose.Schema(
     },
     End_Year: {
       type: Number,
-      default: null, // null = Ongoing
+      default: null,
     },
     Status: {
       type: String,
       required: [true, "Status is required"],
       enum: ["Ongoing", "Resolved"],
     },
-
-    // Economic Impact
-    "GDP_Change_%": {
-      type: Number,
-      default: null,
-    },
-    "Inflation_Rate_%": {
-      type: Number,
-      default: null,
-    },
-
-    // Poverty Indicators
-    "Poverty_Rate_%": {
-      type: Number,
-      default: null,
-    },
-    "Extreme_Poverty_Rate_%": {
-      type: Number,
-      default: null,
-    },
-    "Food_Insecurity_Rate_%": {
-      type: Number,
-      default: null,
+    Primary_Country: {
+      type: String,
+      required: [true, "Primary country is required"],
+      trim: true,
     },
 
     // Unemployment
@@ -71,83 +45,106 @@ const conflictSchema = new mongoose.Schema(
       type: Number,
       default: null,
     },
-    "Youth_Unemployment_%": {
+    Unemployment_Spike_Percentage_Points: {
+      type: Number,
+      default: null,
+    },
+    Most_Affected_Sector: {
+      type: String,
+      trim: true,
+      default: null,
+    },
+    "Youth_Unemployment_Change_%": {
       type: Number,
       default: null,
     },
 
-    // Sector
-    Affected_Sector: {
-      type: String,
-      trim: true,
+    // Poverty Indicators
+    "Pre_War_Poverty_Rate_%": {
+      type: Number,
       default: null,
-      // e.g. Agriculture, Manufacturing, Energy, Services
+    },
+    "During_War_Poverty_Rate_%": {
+      type: Number,
+      default: null,
+    },
+    "Extreme_Poverty_Rate_%": {
+      type: Number,
+      default: null,
+    },
+    "Food_Insecurity_Rate_%": {
+      type: Number,
+      default: null,
+    },
+    Households_Fallen_Into_Poverty_Estimate: {
+      type: Number,
+      default: null,
+    },
+
+    // Economic Impact
+    "GDP_Change_%": {
+      type: Number,
+      default: null,
+    },
+    "Inflation_Rate_%": {
+      type: Number,
+      default: null,
+    },
+    "Currency_Devaluation_%": {
+      type: Number,
+      default: null,
+    },
+
+    // Cost & Reconstruction
+    Cost_of_War_USD: {
+      type: Number,
+      default: null,
+    },
+    Estimated_Reconstruction_Cost_USD: {
+      type: Number,
+      default: null,
+    },
+
+    // Informal Economy
+    "Informal_Economy_Size_Pre_War_%": {
+      type: Number,
+      default: null,
+    },
+    "Informal_Economy_Size_During_War_%": {
+      type: Number,
+      default: null,
     },
 
     // Black Market
-    Black_Market_Level: {
+    Black_Market_Activity_Level: {
       type: String,
-      enum: ["Low", "Medium", "High", null],
+      enum: ["Low", "Moderate", "High", "Dominant", null],
       default: null,
     },
-    Black_Market_Goods: {
+    Primary_Black_Market_Goods: {
       type: String,
       trim: true,
-      default: null,
-      // e.g. fuel, weapons, food, medicine
-    },
-    Profiteering: {
-      type: String,
-      enum: ["Yes", "No", null],
-      default: null,
-    },
-
-    // Currency
-    "Currency_Devaluation_%": {
-      type: Number,
       default: null,
     },
     "Currency_Black_Market_Rate_Gap_%": {
       type: Number,
       default: null,
     },
-
-    // Cost & Reconstruction
-    Estimated_Reconstruction_Cost_USD: {
-      type: Number,
-      default: null,
-    },
-    Cost_of_War_USD: {
-      type: Number,
-      default: null,
-    },
-
-    // Informal Economy
-    "Pre_War_Informal_Economy_%": {
-      type: Number,
-      default: null,
-    },
-    "During_War_Informal_Economy_%": {
-      type: Number,
-      default: null,
-    },
-
-    // Households
-    Households_Affected:{
-      type: Number,
+    War_Profiteering_Documented: {
+      type: String,
+      enum: ["Yes", "No", null],
       default: null,
     },
   },
   {
     timestamps: true,
-    // Allow dot-notation field names with special chars
     strict: false,
   }
 );
 
 // Indexes for frequent query fields
 conflictSchema.index({ Conflict_Name: 1 });
-conflictSchema.index({ Country: 1 });
+conflictSchema.index({ Primary_Country: 1 });
 conflictSchema.index({ Region: 1 });
 conflictSchema.index({ Status: 1 });
 conflictSchema.index({ Conflict_Type: 1 });

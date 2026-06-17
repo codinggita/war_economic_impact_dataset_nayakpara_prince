@@ -3,6 +3,7 @@ const { AppError } = require("../utils/errorHandler");
 /**
  * Validate Conflict Request Body
  * Validates required fields and data types for creating/updating a conflict
+ * matching the google drive dataset fields.
  */
 const validateConflict = (req, res, next) => {
   const errors = [];
@@ -16,8 +17,8 @@ const validateConflict = (req, res, next) => {
     if (!body.Conflict_Type || typeof body.Conflict_Type !== "string" || !body.Conflict_Type.trim()) {
       errors.push("Conflict_Type is required and must be a non-empty string");
     }
-    if (!body.Country || typeof body.Country !== "string" || !body.Country.trim()) {
-      errors.push("Country is required and must be a non-empty string");
+    if (!body.Primary_Country || typeof body.Primary_Country !== "string" || !body.Primary_Country.trim()) {
+      errors.push("Primary_Country is required and must be a non-empty string");
     }
     if (!body.Region || typeof body.Region !== "string" || !body.Region.trim()) {
       errors.push("Region is required and must be a non-empty string");
@@ -48,7 +49,7 @@ const validateConflict = (req, res, next) => {
     }
   }
 
-  if (body.Status !== undefined) {
+  if (body.Status !== undefined && body.Status !== null) {
     if (!["Ongoing", "Resolved"].includes(body.Status)) {
       errors.push('Status must be either "Ongoing" or "Resolved"');
     }
@@ -58,19 +59,21 @@ const validateConflict = (req, res, next) => {
   const numericFields = [
     "GDP_Change_%",
     "Inflation_Rate_%",
-    "Poverty_Rate_%",
+    "Pre_War_Poverty_Rate_%",
+    "During_War_Poverty_Rate_%",
     "Extreme_Poverty_Rate_%",
     "Food_Insecurity_Rate_%",
     "Pre_War_Unemployment_%",
     "During_War_Unemployment_%",
-    "Youth_Unemployment_%",
+    "Unemployment_Spike_Percentage_Points",
+    "Youth_Unemployment_Change_%",
     "Currency_Devaluation_%",
     "Currency_Black_Market_Rate_Gap_%",
     "Estimated_Reconstruction_Cost_USD",
     "Cost_of_War_USD",
-    "Pre_War_Informal_Economy_%",
-    "During_War_Informal_Economy_%",
-    "Households_Affected",
+    "Informal_Economy_Size_Pre_War_%",
+    "Informal_Economy_Size_During_War_%",
+    "Households_Fallen_Into_Poverty_Estimate",
   ];
 
   numericFields.forEach((field) => {
@@ -83,14 +86,17 @@ const validateConflict = (req, res, next) => {
 
   // Percentage fields should be 0-100 (except GDP_Change which can be negative)
   const percentageFields = [
-    "Poverty_Rate_%",
+    "Pre_War_Poverty_Rate_%",
+    "During_War_Poverty_Rate_%",
     "Extreme_Poverty_Rate_%",
     "Food_Insecurity_Rate_%",
     "Pre_War_Unemployment_%",
     "During_War_Unemployment_%",
-    "Youth_Unemployment_%",
-    "Pre_War_Informal_Economy_%",
-    "During_War_Informal_Economy_%",
+    "Youth_Unemployment_Change_%",
+    "Currency_Devaluation_%",
+    "Currency_Black_Market_Rate_Gap_%",
+    "Informal_Economy_Size_Pre_War_%",
+    "Informal_Economy_Size_During_War_%",
   ];
 
   percentageFields.forEach((field) => {
@@ -110,16 +116,17 @@ const validateConflict = (req, res, next) => {
     }
   }
 
-  // Enum validations
-  if (body.Black_Market_Level !== undefined && body.Black_Market_Level !== null) {
-    if (!["Low", "Medium", "High"].includes(body.Black_Market_Level)) {
-      errors.push('Black_Market_Level must be "Low", "Medium", or "High"');
+  // Enum validations for Black Market Activity Level
+  if (body.Black_Market_Activity_Level !== undefined && body.Black_Market_Activity_Level !== null) {
+    if (!["Low", "Moderate", "High", "Dominant"].includes(body.Black_Market_Activity_Level)) {
+      errors.push('Black_Market_Activity_Level must be "Low", "Moderate", "High", or "Dominant"');
     }
   }
 
-  if (body.Profiteering !== undefined && body.Profiteering !== null) {
-    if (!["Yes", "No"].includes(body.Profiteering)) {
-      errors.push('Profiteering must be "Yes" or "No"');
+  // Enum validations for War Profiteering Documented
+  if (body.War_Profiteering_Documented !== undefined && body.War_Profiteering_Documented !== null) {
+    if (!["Yes", "No"].includes(body.War_Profiteering_Documented)) {
+      errors.push('War_Profiteering_Documented must be "Yes" or "No"');
     }
   }
 

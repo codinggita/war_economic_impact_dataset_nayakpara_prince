@@ -49,7 +49,7 @@ const getHighestInflation = asyncHandler(async (req, res) => {
     {
       $project: {
         Conflict_Name: 1,
-        Country: 1,
+        Primary_Country: 1,
         Region: 1,
         "Inflation_Rate_%": 1,
         Start_Year: 1,
@@ -70,7 +70,7 @@ const getLowestGdp = asyncHandler(async (req, res) => {
     {
       $project: {
         Conflict_Name: 1,
-        Country: 1,
+        Primary_Country: 1,
         Region: 1,
         "GDP_Change_%": 1,
         Start_Year: 1,
@@ -85,15 +85,15 @@ const getLowestGdp = asyncHandler(async (req, res) => {
 /** @route GET /stats/highest-poverty */
 const getHighestPoverty = asyncHandler(async (req, res) => {
   const result = await Conflict.aggregate([
-    { $match: { "Poverty_Rate_%": { $ne: null }, isDeleted: { $ne: true } } },
-    { $sort: { "Poverty_Rate_%": -1 } },
+    { $match: { "During_War_Poverty_Rate_%": { $ne: null }, isDeleted: { $ne: true } } },
+    { $sort: { "During_War_Poverty_Rate_%": -1 } },
     { $limit: 1 },
     {
       $project: {
         Conflict_Name: 1,
-        Country: 1,
+        Primary_Country: 1,
         Region: 1,
-        "Poverty_Rate_%": 1,
+        "During_War_Poverty_Rate_%": 1,
         "Extreme_Poverty_Rate_%": 1,
         Start_Year: 1,
         Status: 1,
@@ -112,7 +112,7 @@ const getHighestFoodInsecurity = asyncHandler(async (req, res) => {
     {
       $project: {
         Conflict_Name: 1,
-        Country: 1,
+        Primary_Country: 1,
         Region: 1,
         "Food_Insecurity_Rate_%": 1,
         Start_Year: 1,
@@ -132,7 +132,7 @@ const getHighestCurrencyGap = asyncHandler(async (req, res) => {
     {
       $project: {
         Conflict_Name: 1,
-        Country: 1,
+        Primary_Country: 1,
         Region: 1,
         "Currency_Black_Market_Rate_Gap_%": 1,
         "Currency_Devaluation_%": 1,
@@ -153,7 +153,7 @@ const getHighestWarCost = asyncHandler(async (req, res) => {
     {
       $project: {
         Conflict_Name: 1,
-        Country: 1,
+        Primary_Country: 1,
         Region: 1,
         Cost_of_War_USD: 1,
         Start_Year: 1,
@@ -174,7 +174,7 @@ const getHighestReconstructionCost = asyncHandler(async (req, res) => {
     {
       $project: {
         Conflict_Name: 1,
-        Country: 1,
+        Primary_Country: 1,
         Region: 1,
         Estimated_Reconstruction_Cost_USD: 1,
         Start_Year: 1,
@@ -200,7 +200,7 @@ const getStatsByRegion = asyncHandler(async (req, res) => {
         totalConflicts: { $sum: 1 },
         avgGdpChange: { $avg: "$GDP_Change_%" },
         avgInflation: { $avg: "$Inflation_Rate_%" },
-        avgPoverty: { $avg: "$Poverty_Rate_%" },
+        avgPoverty: { $avg: "$During_War_Poverty_Rate_%" },
         totalWarCost: { $sum: "$Cost_of_War_USD" },
         totalReconstructionCost: { $sum: "$Estimated_Reconstruction_Cost_USD" },
       },
@@ -232,7 +232,7 @@ const getStatsByType = asyncHandler(async (req, res) => {
         totalConflicts: { $sum: 1 },
         avgGdpChange: { $avg: "$GDP_Change_%" },
         avgInflation: { $avg: "$Inflation_Rate_%" },
-        avgPoverty: { $avg: "$Poverty_Rate_%" },
+        avgPoverty: { $avg: "$During_War_Poverty_Rate_%" },
         ongoingCount: {
           $sum: { $cond: [{ $eq: ["$Status", "Ongoing"] }, 1, 0] },
         },
@@ -261,10 +261,10 @@ const getStatsByType = asyncHandler(async (req, res) => {
 /** @route GET /stats/by-sector */
 const getStatsBySector = asyncHandler(async (req, res) => {
   const result = await Conflict.aggregate([
-    { $match: { Affected_Sector: { $ne: null }, isDeleted: { $ne: true } } },
+    { $match: { Most_Affected_Sector: { $ne: null }, isDeleted: { $ne: true } } },
     {
       $group: {
-        _id: "$Affected_Sector",
+        _id: "$Most_Affected_Sector",
         totalConflicts: { $sum: 1 },
         avgGdpChange: { $avg: "$GDP_Change_%" },
         avgInflation: { $avg: "$Inflation_Rate_%" },
@@ -332,11 +332,11 @@ const getOverview = asyncHandler(async (req, res) => {
           totalConflicts: { $sum: 1 },
           avgGdpChange: { $avg: "$GDP_Change_%" },
           avgInflation: { $avg: "$Inflation_Rate_%" },
-          avgPoverty: { $avg: "$Poverty_Rate_%" },
+          avgPoverty: { $avg: "$During_War_Poverty_Rate_%" },
           totalWarCost: { $sum: "$Cost_of_War_USD" },
           totalReconstructionCost: { $sum: "$Estimated_Reconstruction_Cost_USD" },
-          totalHouseholdsAffected: { $sum: "$Households_Affected" },
-          uniqueCountries: { $addToSet: "$Country" },
+          totalHouseholdsAffected: { $sum: "$Households_Fallen_Into_Poverty_Estimate" },
+          uniqueCountries: { $addToSet: "$Primary_Country" },
           uniqueRegions: { $addToSet: "$Region" },
         },
       },
@@ -366,7 +366,7 @@ const getOverview = asyncHandler(async (req, res) => {
       {
         $project: {
           Conflict_Name: 1,
-          Country: 1,
+          Primary_Country: 1,
           Cost_of_War_USD: 1,
           _id: 0,
         },

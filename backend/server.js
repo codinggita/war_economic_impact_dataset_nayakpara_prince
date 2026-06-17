@@ -54,6 +54,9 @@ app.get("/version", (req, res) => {
   });
 });
 
+// Compare route
+app.get("/compare", require("./controllers/conflictController").compareConflicts);
+
 // HEAD & OPTIONS for health
 app.head("/health", (req, res) => res.sendStatus(200));
 app.options("/health", (req, res) => {
