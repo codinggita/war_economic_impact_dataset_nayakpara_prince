@@ -1,18 +1,16 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const path = require("path");
-const fs = require("fs");
 const Conflict = require("../models/Conflict");
 const User = require("../models/User");
 
-// Configure dotenv (point to backend/.env)
-dotenv.config({ path: path.join(__dirname, "../.env") });
+dotenv.config();
+
+const MONGO_URI = process.env.MONGO_URI;
 
 const seedDB = async () => {
   try {
-    const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/war_economic_impact";
-    console.log(`Connecting to database: ${mongoUri}`);
-    await mongoose.connect(mongoUri);
+    console.log(`Connecting to database: ${MONGO_URI}`);
+    await mongoose.connect(MONGO_URI);
     console.log("Connected to MongoDB for seeding.");
 
     // Clean existing data
@@ -21,19 +19,33 @@ const seedDB = async () => {
     await User.deleteMany({});
     console.log("Database cleaned.");
 
-    // Load conflicts seed data
-    const conflictsPath = path.join(__dirname, "../data/conflicts.json");
-    if (!fs.existsSync(conflictsPath)) {
-      throw new Error(`Seed data file not found at: ${conflictsPath}`);
-    }
-    const conflictsData = JSON.parse(fs.readFileSync(conflictsPath, "utf-8"));
+    // Load raw dataset (values are strings, need to convert to numbers)
+    const rawData = require("../data/conflicts.json");
 
-    // Seed conflicts
-    console.log(`Seeding ${conflictsData.length} conflicts...`);
-    await Conflict.insertMany(conflictsData);
+    // Convert string values to proper types
+    const conflicts = rawData.map((item) => {
+      const doc = {};
+      for (const [key, value] of Object.entries(item)) {
+        if (key === "Conflict_Name" || key === "Conflict_Type" || key === "Region" ||
+            key === "Status" || key === "Primary_Country" || key === "Most_Affected_Sector" ||
+            key === "Black_Market_Activity_Level" || key === "Primary_Black_Market_Goods" ||
+            key === "War_Profiteering_Documented") {
+          // Keep as string
+          doc[key] = value;
+        } else {
+          // Convert to number
+          const num = parseFloat(value);
+          doc[key] = isNaN(num) ? null : num;
+        }
+      }
+      return doc;
+    });
+
+    console.log(`Seeding ${conflicts.length} conflicts...`);
+    await Conflict.insertMany(conflicts);
     console.log("Conflicts seeded successfully.");
 
-    // Seed mock users (automatically hashed by schema pre-save hook)
+    // Seed test users
     console.log("Seeding test users...");
     await User.create([
       {
@@ -50,10 +62,12 @@ const seedDB = async () => {
       },
     ]);
     console.log("Test users seeded successfully.");
+
     console.log("--- Seeding complete! ---");
     console.log("Test Credentials:");
     console.log("  Admin User:   admin@example.com / password123 (role: admin)");
     console.log("  Regular User: user@example.com / password123 (role: user)");
+
     process.exit(0);
   } catch (error) {
     console.error("Error seeding database:", error);
